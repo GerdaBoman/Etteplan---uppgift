@@ -7,7 +7,8 @@ internal class Program
     {
         int attrId = 42007;
 
-        string filePath = Path.Combine(Environment.CurrentDirectory, @"Data\", "sma_gentext.xml");
+        string filePath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+            @"..\..\..\Data\sma_gentext.xml"));
 
 
         XmlDocument xmlDoc = new XmlDocument();
@@ -40,6 +41,7 @@ internal class Program
         using (StreamWriter writer = new(resultPath))
         {
             writer.WriteLine(unit.Target);
+            writer.Close();
         };
 
         Console.Write("Completed : Result.txt file is saved on your local desktop");
