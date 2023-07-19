@@ -21,4 +21,3 @@ UnitEntity unit = new UnitEntity
 };
 
 Console.WriteLine(unit.Target);
-
