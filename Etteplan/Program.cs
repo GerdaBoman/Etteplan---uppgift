@@ -10,12 +10,15 @@ internal class Program
         string filePath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
             @"..\..\..\Data\sma_gentext.xml"));
 
-        var targetUnit = GetTargetById(filePath, attrId);
+        var targetUnit = GetTansUnitById(filePath, attrId);
 
-        WriteToFile(targetUnit);
+        if (targetUnit == null)
+            throw new Exception("ID not found!");
+        else
+            WriteTargetToFile(targetUnit);
     }
 
-    static UnitEntity GetTargetById(string filePath, int id)
+    static TransUnit? GetTansUnitById(string filePath, int id)
     {
 
         XmlDocument xmlDoc = new XmlDocument();
@@ -23,8 +26,12 @@ internal class Program
 
         var node = xmlDoc.SelectSingleNode($"//*[@id='{id}']");
 
+        if (node == null)
+        {
+            return null;
+        }
 
-        UnitEntity unit = new UnitEntity
+        TransUnit unit = new TransUnit
         {
             Id = id,
             Source = node.FirstChild.InnerText,
@@ -34,7 +41,7 @@ internal class Program
         return unit;
     }
 
-    static void WriteToFile(UnitEntity unit)
+    static void WriteTargetToFile(TransUnit unit)
     {
         var filePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         var resultPath = Path.Combine(filePath, "Result.txt");

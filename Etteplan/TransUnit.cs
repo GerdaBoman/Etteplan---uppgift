@@ -1,6 +1,6 @@
 ﻿namespace Etteplan
 {
-    public class UnitEntity
+    public class TransUnit
     {
         public int Id { get; set; }
         public string Source { get; set; }
