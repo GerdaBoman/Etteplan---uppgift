@@ -5,7 +5,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        int attrId = 42007;
+        int attrId = 42007; // Attribut ID
 
         string filePath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
             @"..\..\..\Data\sma_gentext.xml"));
@@ -24,21 +24,24 @@ internal class Program
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.Load(filePath);
 
-        var node = xmlDoc.SelectSingleNode($"//*[@id='{id}']");
+        var node = xmlDoc.SelectSingleNode($"//*[@id='{id}']"); // Selects node by attribute ID
 
-        if (node == null)
+        if (node != null)
         {
-            return null;
+
+
+
+            TransUnit unit = new TransUnit
+            {
+                Id = id,
+                Source = node.SelectSingleNode("source").InnerText,
+                Target = node.SelectSingleNode("target").InnerText, // gets inner text of "target"
+            };
+
+            return unit;
         }
 
-        TransUnit unit = new TransUnit
-        {
-            Id = id,
-            Source = node.FirstChild.InnerText,
-            Target = node.LastChild.InnerText,
-        };
-
-        return unit;
+        return null;
     }
 
     static void WriteTargetToFile(TransUnit unit)
@@ -48,7 +51,7 @@ internal class Program
 
         if (!File.Exists(resultPath))
         {
-            File.Create(resultPath);
+            File.Create(resultPath).Close();
 
         }
 
